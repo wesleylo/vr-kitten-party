@@ -8,8 +8,9 @@ public class player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Debug.Log("Player initialized");
         anim = GetComponent<Animator>();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {
