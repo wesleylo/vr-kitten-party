@@ -30,11 +30,11 @@ public class beCat : StateMachineBehaviour {
 
     // OnStateMachineEnter is called when entering a statemachine via its Entry Node
     override public void OnStateMachineEnter(Animator anim, int stateMachinePathHash) {
-        if (anim.GetBool("beingCat") == false || anim.GetBool("isIdle") == true)
-        {
-            OnStateMachineExit(anim, stateMachinePathHash);
-        } else
-        {
+        //if (anim.GetBool("beingCat") == false || anim.GetBool("isIdle") == true)
+        //{
+        //    OnStateMachineExit(anim, stateMachinePathHash);
+        //} else
+        //{
             anim.SetBool("isRunning", false);
             anim.SetBool("isWalking", false);
             anim.SetBool("isIdle", false);
@@ -43,14 +43,14 @@ public class beCat : StateMachineBehaviour {
             if (rndState == 4) rndState = 0; // More likely to go to idle
             anim.SetInteger("beingCatState", rndState);
             Debug.Log("StateMachine Enter = " + anim.GetInteger("beingCatState"));
-        }
+        //}
 
     }
 
 	// OnStateMachineExit is called when exiting a statemachine via its Exit Node
 	override public void OnStateMachineExit(Animator anim, int stateMachinePathHash) {
-        Debug.Log("SM exiting");
-        anim.SetBool("beingCat", false);
+        anim.SetInteger("beingCatState", -1); // means exited
         anim.SetBool("isIdle", true);
+        Debug.Log("StateMachine Exit");
     }
 }
