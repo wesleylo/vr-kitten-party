@@ -18,10 +18,8 @@ public class chase : MonoBehaviour {
         
         Debug.Log("NPC initialized");
 
-        //anim.SetBool("isIdle", false);
-        //anim.SetBool("beingCat", true); //for debugging becat
-
         rndInterest = Random.Range(0, 10);
+        rndInterest = 9;
         // Determine interestLvl: 1(0-5), 2(6-8), or 3(9)
         Debug.Log("rndInterest = " + rndInterest);
         if (rndInterest < 6) { // Cat will be interested and run
@@ -53,30 +51,33 @@ public class chase : MonoBehaviour {
         
         if ((Time.fixedTime % 10) == 0) // Every 10 sec
         {
-            rndInterest = Random.Range(0, 11);
-            if (rndInterest == 0)
+            if (anim.GetBool("isRunning") == false && anim.GetBool("isWalking") == false && anim.GetBool("beingCat") == false)
             {
-                if (interestLvl < 2) // Currently interested
+                rndInterest = Random.Range(0, 11);
+                if (rndInterest == 0)
                 {
-                    // 10% chance of becoming uninterested for interested cat
+                    if (interestLvl < 2) // Currently interested
+                    {
+                        // 10% chance of becoming uninterested for interested cat
+                        anim.SetBool("isRunning", false);
+                        anim.SetBool("isWalking", false);
+                        anim.SetBool("isIdle", false);
+                        anim.SetBool("beingCat", true);
+                        Debug.Log("Became uninterested");
+                    }
+                    else // 10% chance of becoming interested for uninterested cat
+                    {
+                        rndInterest = Random.Range(0, 2);
+                        interestLvl = rndInterest; // 50% chance of running or walking
+                        anim.SetBool("isRunning", false);
+                        anim.SetBool("isWalking", false);
+                        anim.SetBool("isIdle", true);
+                        anim.SetBool("beingCat", false);
+                        Debug.Log("Became interested");
+                    }
                     anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", false);
-                    anim.SetBool("isIdle", false);
-                    anim.SetBool("beingCat", true);
-                    Debug.Log("Became uninterested");
                 }
-                else // 10% chance of becoming interested for uninterested cat
-                {
-                    rndInterest = Random.Range(0, 2);
-                    interestLvl = rndInterest; // 50% chance of running or walking
-                    anim.SetBool("isRunning", false);
-                    anim.SetBool("isWalking", false);
-                    anim.SetBool("isIdle", true);
-                    anim.SetBool("beingCat", false);
-                    Debug.Log("Became interested");
-                }
-                anim.SetBool("isRunning", false);
-                anim.SetBool("isWalking", false);
             }
         }
         if (interestLvl == 2)
@@ -103,13 +104,20 @@ public class chase : MonoBehaviour {
                                                 // either go to 1st degree circle (random distance within), 2nd degree circle, or will become uninterested and stop randomly along the way
 
                     anim.SetBool("isIdle", false);
-                    if (interestLvl == 0) {
-                        this.transform.Translate(0, 0, 0.01f); // speed
-                        anim.SetBool("isRunning", true);
-                    } else {
-                        if (interestLvl == 1) {
-                            this.transform.Translate(0, 0, 0.005f);
-                            anim.SetBool("isWalking", true);
+                    if (anim.GetBool("beingCat") == false)
+                    {
+                        if (interestLvl == 0)
+                        {
+                            this.transform.Translate(0, 0, 0.01f); // speed
+                            anim.SetBool("isRunning", true);
+                        }
+                        else
+                        {
+                            if (interestLvl == 1)
+                            {
+                                this.transform.Translate(0, 0, 0.005f);
+                                anim.SetBool("isWalking", true);
+                            }
                         }
                     }
                 }

@@ -5,12 +5,9 @@ using UnityEngine;
 public class beCat : StateMachineBehaviour {
     private int rndState;
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
-    override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-        if (anim.GetBool("isIdle") == true)
-        {
-            
-        }
-    }
+    //override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
+
+    //}
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -18,20 +15,8 @@ public class beCat : StateMachineBehaviour {
     //}
 
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
-    override public void OnStateExit(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-        rndState = Random.Range(0, 7);
-        if (rndState > 3) // Exit state machine
-        {
-            anim.SetBool("beingCat", false);
-            anim.SetBool("isIdle", true);
-            Debug.Log("Will exit");
-        }
-        else
-        {
-            anim.SetInteger("beingCatState", rndState);
-            Debug.Log("State Exit = " + anim.GetInteger("beingCatState"));
-        }
-    }
+    //override public void OnStateExit(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
+    //}
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
