@@ -9,31 +9,36 @@ public class chase : MonoBehaviour {
     private int interestLvl;
     private float goToDist;
     private int rndInterest;
-    private int rndState;
     
 
     // Use this for initialization
     void Start() {
-        anim = GetComponent<Animator>(); // get animator component that is attatched to cat
+        anim = GetComponent<Animator>(); // Get animator component that is attached to cat
         goToDist = 0;
-        rndState = -1;
         
         Debug.Log("NPC initialized");
 
-        anim.SetBool("isIdle", false);
-        anim.SetBool("beingCat", true); //for debugging becat
+        //anim.SetBool("isIdle", false);
+        //anim.SetBool("beingCat", true); //for debugging becat
 
         rndInterest = Random.Range(0, 10);
         // Determine interestLvl: 1(0-5), 2(6-8), or 3(9)
         Debug.Log("rndInterest = " + rndInterest);
-        if (rndInterest < 6) { // Cat will run
+        if (rndInterest < 6) { // Cat will be interested and run
             interestLvl = 0;
+            anim.SetBool("isIdle", true);
+            anim.SetBool("beingCat", false);
             goToDist = Random.Range(0.5f, 1.5f);
-        } else if (rndInterest < 9) { // Cat will walk
+        } else if (rndInterest < 9)
+        { // Cat will be interested and walk
             interestLvl = 1;
+            anim.SetBool("isIdle", true);
+            anim.SetBool("beingCat", false);
             goToDist = Random.Range(0.5f, 2.0f);
         } else { // Cat will be uninterested
             interestLvl = 2;
+            anim.SetBool("isIdle", false);
+            anim.SetBool("beingCat", true);
         }
 
         Debug.Log("interestLvl = " + interestLvl);
@@ -45,13 +50,45 @@ public class chase : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-
+        
+        if ((Time.fixedTime % 10) == 0) // Every 10 sec
+        {
+            rndInterest = Random.Range(0, 11);
+            if (rndInterest == 0)
+            {
+                if (interestLvl < 2) // Currently interested
+                {
+                    // 10% chance of becoming uninterested for interested cat
+                    anim.SetBool("isRunning", false);
+                    anim.SetBool("isWalking", false);
+                    anim.SetBool("isIdle", false);
+                    anim.SetBool("beingCat", true);
+                    Debug.Log("Became uninterested");
+                }
+                else // 10% chance of becoming interested for uninterested cat
+                {
+                    rndInterest = Random.Range(0, 2);
+                    interestLvl = rndInterest; // 50% chance of running or walking
+                    anim.SetBool("isRunning", false);
+                    anim.SetBool("isWalking", false);
+                    anim.SetBool("isIdle", true);
+                    anim.SetBool("beingCat", false);
+                    Debug.Log("Became interested");
+                }
+                anim.SetBool("isRunning", false);
+                anim.SetBool("isWalking", false);
+            }
+        }
+        if (interestLvl == 2)
+        {
+            anim.SetBool("isRunning", false);
+            anim.SetBool("isWalking", false);
+            anim.SetBool("isIdle", false);
+            anim.SetBool("beingCat", true);
+        }
         // randomly toggle beingCat here
         if (anim.GetBool("beingCat") == true) {
             // Should only go into if not moving (ie. idle)
-            
-
-
         }
         else {
             // Vector3.Distance(a,b) is the same as (a-b).magnitude
