@@ -6,10 +6,8 @@ using UnityEngine;
 public class chase : MonoBehaviour {
     public Transform player;
     static Animator anim;
-    static float[] clipTimes;
     private int interestLvl;
     private float goToDist;
-    private float[] playQueue;
     private int rndInterest;
     private int rndState;
     
@@ -17,12 +15,12 @@ public class chase : MonoBehaviour {
     // Use this for initialization
     void Start() {
         anim = GetComponent<Animator>(); // get animator component that is attatched to cat
-        clipTimes = new float[] { 3.8f, 1.76f, 1.23f }; // 0(IdleSit), 1(Itching), 2(Meow)
         goToDist = 0;
         rndState = -1;
         
         Debug.Log("NPC initialized");
 
+        anim.SetBool("isIdle", false);
         anim.SetBool("beingCat", true); //for debugging becat
 
         rndInterest = Random.Range(0, 10);
@@ -47,12 +45,13 @@ public class chase : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
+        // randomly toggle beingCat here
         if (anim.GetBool("beingCat") == true) {
             // Should only go into if not moving (ie. idle)
-            //anim.SetBool("isIdle", false);
-            //anim.SetBool("isRunning", true);
-            //BeCat();
-            Debug.Log("Fixed time = " + Time.fixedTime);
+            
+
+
         }
         else {
             // Vector3.Distance(a,b) is the same as (a-b).magnitude
@@ -89,112 +88,6 @@ public class chase : MonoBehaviour {
                 anim.SetBool("isRunning", false);
                 anim.SetBool("isIdle", true);
             }
-        }
-    }
-    private void BeCat()
-    {
-        //Debug.Log("being cat");
-        //randomly go to others, more chance of going into idle
-        //Debug.Log("fixed time = " + Time.fixedTime);
-        float queueTime = 0;
-        bool firstItr = true;
-
-        //rm
-        rndState = Random.Range(0, 4);
-        anim.SetInteger("beingCatState", rndState);
-        Debug.Log(anim.GetInteger("beingCatState"));
-        if (rndState == 0)
-        {
-            anim.PlayInFixedTime("IdleSit", 0,10.0f);
-        }
-        //\rm
-
-        //while (rndState != 3)
-        if (false)
-        {
-            rndState = Random.Range(0, 4);
-            anim.SetInteger("beingCatState", rndState);
-            Debug.Log(anim.GetInteger("beingCatState"));
-            // make more likely to exit here
-            if (firstItr == true)
-            {
-                queueTime = Time.fixedTime;
-                Debug.Log("Entry time = " + queueTime);
-                switch (rndState)
-                {
-                    case 0:
-                        Debug.Log("play idle sit");
-                        PlayQueued(0, Time.fixedTime);
-
-                        break;
-                    case 1:
-                        Debug.Log("play itching");
-                        break;
-                    case 2:
-                        Debug.Log("play meow");
-                        break;
-                    case 3:
-                        Debug.Log("play idle");
-                        break;
-                }
-                firstItr = false;
-            }
-            else
-            {
-                switch (rndState)
-                {
-                    case 0:
-                        Debug.Log("play idle sit");
-                        //anim.Play("IdleSit");
-                        Debug.Log("Entry time = " + Time.fixedTime);
-                        queueTime += clipTimes[0];
-                        PlayQueued(0, Time.fixedTime);
-                        break;
-                    case 1:
-                        Debug.Log("play itching");
-                        queueTime += clipTimes[1];
-                        break;
-                    case 2:
-                        Debug.Log("play meow");
-                        queueTime += clipTimes[2];
-                        break;
-                    case 3:
-                        Debug.Log("play idle");
-                        break;
-                }
-            }
-        }
-        
-        if (rndState == 3)
-        {
-            //anim.Stop();
-            //anim.setbool("beingcat", false);
-            //anim.setbool("isidle", false);
-        }
-    }
-    private void CalcQueueTime(int clip, float time)
-    {
-
-    }
-
-    private void PlayQueued(int clip, float time) {
-        anim.Play("IdleSit");
-        switch (clip)
-        {
-            case 0:
-                anim.Play("IdleSit");
-                break;
-            case 1:
-                anim.Play("Itching");
-                break;
-            case 2:
-                anim.Play("Meow");
-                break;
-        }
-        if (Time.fixedTime != time + clipTimes[clip])
-        {
-            Debug.Log("Wait time = " + Time.fixedTime);
-            //wait
         }
     }
 }
