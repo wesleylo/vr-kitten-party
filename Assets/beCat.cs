@@ -10,7 +10,8 @@ public class beCat : StateMachineBehaviour {
 
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-        if (anim.GetInteger("beingCatState") == 3)
+        soundSource.PlayOneShot(sound); // doesn't work, make seperate script to play audio.
+        if (anim.GetInteger("beingCatState") > 0) //==3
         {
             if (soundPlayed == false)
             {
@@ -18,6 +19,7 @@ public class beCat : StateMachineBehaviour {
                 soundPlayed = true;
             }
         }
+        Debug.Log("State Enter");
     }
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -28,6 +30,7 @@ public class beCat : StateMachineBehaviour {
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
     override public void OnStateExit(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
         soundPlayed = false;
+        Debug.Log("State Exit");
     }
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
@@ -42,7 +45,7 @@ public class beCat : StateMachineBehaviour {
 
     // OnStateMachineEnter is called when entering a statemachine via its Entry Node
     override public void OnStateMachineEnter(Animator anim, int stateMachinePathHash) {
-        soundSource = anim.GetComponent<AudioSource>();
+        soundSource = anim.GetComponentInParent<AudioSource>();
         soundPlayed = false;
         anim.SetBool("isRunning", false);
         anim.SetBool("isWalking", false);
