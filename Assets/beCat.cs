@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class beCat : StateMachineBehaviour {
-    public AudioClip meow;
+    public AudioClip sound;
+    public AudioSource soundSource;
     private int rndState;
+    private bool soundPlayed;
 
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-        anim.GetComponent<AudioSource>().PlayOneShot(meow);
+        if (anim.GetInteger("beingCatState") == 3)
+        {
+            if (soundPlayed == false)
+            {
+                soundSource.PlayOneShot(sound);
+                soundPlayed = true;
+            }
+        }
     }
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -17,8 +26,9 @@ public class beCat : StateMachineBehaviour {
     //}
 
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
-    //override public void OnStateExit(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-    //}
+    override public void OnStateExit(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
+        soundPlayed = false;
+    }
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
@@ -32,6 +42,8 @@ public class beCat : StateMachineBehaviour {
 
     // OnStateMachineEnter is called when entering a statemachine via its Entry Node
     override public void OnStateMachineEnter(Animator anim, int stateMachinePathHash) {
+        soundSource = anim.GetComponent<AudioSource>();
+        soundPlayed = false;
         anim.SetBool("isRunning", false);
         anim.SetBool("isWalking", false);
         anim.SetBool("isIdle", false);

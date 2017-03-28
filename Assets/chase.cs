@@ -12,6 +12,7 @@ public class chase : MonoBehaviour {
     private int interestLvl;
     private float goToDist;
     private int rndInterest;
+    private bool soundPlayed;
 
     // Use this for initialization
     void Start() {
@@ -19,6 +20,7 @@ public class chase : MonoBehaviour {
         anim = GetComponent<Animator>(); // Get animator component that is attached to cat
         interestChange = false;
         goToDist = 0;
+        soundPlayed = false;
         
         Debug.Log("NPC initialized");
 
@@ -141,7 +143,12 @@ public class chase : MonoBehaviour {
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isIdle", true);
                     // randomly play purr after some time
-                    soundSource.PlayOneShot(sound);
+                    if (soundPlayed == false)
+                    {
+                        soundSource.PlayOneShot(sound);
+                        soundPlayed = true;
+                    }
+                    
                 }
             }
             else
