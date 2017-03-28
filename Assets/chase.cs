@@ -6,6 +6,8 @@ using UnityEngine;
 public class chase : MonoBehaviour {
     public Transform player;
     static Animator anim;
+    public AudioClip sound;
+    public AudioSource soundSource;
     private bool interestChange;
     private int interestLvl;
     private float goToDist;
@@ -13,6 +15,7 @@ public class chase : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        soundSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>(); // Get animator component that is attached to cat
         interestChange = false;
         goToDist = 0;
@@ -20,6 +23,7 @@ public class chase : MonoBehaviour {
         Debug.Log("NPC initialized");
 
         rndInterest = Random.Range(0, 10);
+        //rndInterest = 9;
         // Determine interestLvl: 1(0-5), 2(6-8), or 3(9)
         if (rndInterest < 6) { // Cat will be interested and run
             interestLvl = 0;
@@ -56,7 +60,6 @@ public class chase : MonoBehaviour {
             if (anim.GetBool("isRunning") == false && anim.GetBool("isWalking") == false && anim.GetBool("isIdle") == true && anim.GetInteger("beingCatState") == -1)
             {
                 rndInterest = Random.Range(0, 11);
-                rndInterest = 1;
                 Debug.Log("rndInterest = " + rndInterest);
                 if (rndInterest == 0 || rndInterest == 1)
                 {
@@ -137,6 +140,8 @@ public class chase : MonoBehaviour {
                     anim.SetBool("isRunning", false);
                     anim.SetBool("isWalking", false);
                     anim.SetBool("isIdle", true);
+                    // randomly play purr after some time
+                    soundSource.PlayOneShot(sound);
                 }
             }
             else

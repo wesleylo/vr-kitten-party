@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class beCat : StateMachineBehaviour {
+    public AudioClip meow;
     private int rndState;
+
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
-    //override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
-    //
-    //}
+    override public void OnStateEnter(Animator anim, AnimatorStateInfo stateInfo, int layerIndex) {
+        anim.GetComponent<AudioSource>().PlayOneShot(meow);
+    }
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
