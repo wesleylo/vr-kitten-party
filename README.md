@@ -5,7 +5,7 @@ This virtual reality game was built for use with the HTC Vive. Use the grip butt
 Install SteamVR
 
 Open the game:
-```%USERPROFILE%\Documents\Wesley_Lo_Kitten_Party\kitten-party-v2.exe -vrmode openvr```
+```%USERPROFILE%\Documents\Wesley_Lo_Kitten_Party\kitten-party.exe -vrmode openvr```
 
 This repo is not up to date. Went over Github's file size limit.
 Copyright 2017 [Wesley Lo](https://github.com/wesleylo/vr-kitten-party).
